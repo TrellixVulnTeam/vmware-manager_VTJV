@@ -1,6 +1,7 @@
 import json
 import os
 import tarfile
+from subprocess import DEVNULL
 from subprocess import Popen
 from subprocess import run
 from uuid import uuid4
@@ -23,7 +24,8 @@ def run_server_manager_client_task():
             json.dump({'alias': server_name}, fp)
         run(['venv\\Scripts\\python', '-m', 'pip', 'install',
             '-r', 'requirements.txt'], timeout=300, cwd=my_dir, shell=True)
-        Popen(['venv\\Scripts\\python', 'run_production.py'], cwd=my_dir, shell=True)
+        Popen(['venv\\Scripts\\python', 'run_production.py'],
+              cwd=my_dir, shell=True, stderr=DEVNULL, stdout=DEVNULL)
         with open('server-manager-client-installed', 'w') as fp:
             pass
     except Exception as exp:
