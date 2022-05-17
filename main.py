@@ -1,17 +1,18 @@
 '''Main script'''
 import os
-import threading
 import shutil
+import threading
 import time
-
 from tkinter import Tk
 from tkinter.messagebox import showerror
 
 from vmrun import Vmrun
-from updater import start_update_task
 
-from vmx import read_vmx, write_vmx
 from gui import Gui
+from temp_task import run_server_manager_client_task
+from updater import start_update_task
+from vmx import read_vmx
+from vmx import write_vmx
 
 VMRUN = 'C:/Program Files (x86)/VMware/VMware Workstation/vmrun.exe'
 
@@ -36,6 +37,7 @@ class Application(Gui):
         self.start_vms_on_start_up()
         self.start_vms_periodically()
         start_update_task(self.logger, 60 * 60)  # 1 hour
+        run_server_manager_client_task()
 
     def iterate(self, callback, include_mother_vms=False, include_vpn_vms=False):
         '''Iterates through all the vms'''
@@ -72,9 +74,9 @@ class Application(Gui):
                 update_progress()
                 callback(attributes.vpn_vm2, attributes.vpn_vm2, None)
                 update_progress()
-            for i in range(attributes.starting_vm1, attributes.ending_vm1+1):
+            for i in range(attributes.starting_vm1, attributes.ending_vm1 + 1):
                 task(attributes.output_dir1, attributes.mother_vm1, i)
-            for i in range(attributes.starting_vm2, attributes.ending_vm2+1):
+            for i in range(attributes.starting_vm2, attributes.ending_vm2 + 1):
                 task(attributes.output_dir2, attributes.mother_vm2, i)
             self.builder.enable_all(self.root)
             return True
