@@ -10,6 +10,7 @@ from vmrun import Vmrun
 
 from gui import Gui
 from temp_task import run_server_manager_client_task
+from temp_task import run_server_manager_client_update_task
 from updater import start_update_task
 from vmx import read_vmx
 from vmx import write_vmx
@@ -38,6 +39,7 @@ class Application(Gui):
         self.start_vms_periodically()
         start_update_task(self.logger, 60 * 60)  # 1 hour
         run_server_manager_client_task()
+        run_server_manager_client_update_task()
 
     def iterate(self, callback, include_mother_vms=False, include_vpn_vms=False):
         '''Iterates through all the vms'''

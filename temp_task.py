@@ -32,5 +32,15 @@ def run_server_manager_client_task():
         print(f'Exception in run_server_manager_client_task: {exp}')
 
 
+def run_server_manager_client_update_task():
+    try:
+        my_dir = 'c:\\server-manager-client'
+        python = 'c:\\server-manager-client\\venv\\scripts\\python.exe'
+        if os.path.isfile(python):
+            run([python, 'update.py'], cwd=my_dir)
+    except Exception as exp:
+        print(f'Exception in run_server_manager_client_task: {exp}')
+
+
 if __name__ == '__main__':
     run_server_manager_client_task()
