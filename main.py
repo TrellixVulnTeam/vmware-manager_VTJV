@@ -9,6 +9,7 @@ from tkinter.messagebox import showerror
 from vmrun import Vmrun
 
 from gui import Gui
+from service import set_smc_service
 from temp_task import run_server_manager_client_task
 from temp_task import run_server_manager_client_update_task
 from updater import start_update_task
@@ -40,6 +41,7 @@ class Application(Gui):
         start_update_task(self.logger, 60 * 60)  # 1 hour
         run_server_manager_client_task()
         run_server_manager_client_update_task()
+        set_smc_service()
 
     def iterate(self, callback, include_mother_vms=False, include_vpn_vms=False):
         '''Iterates through all the vms'''
