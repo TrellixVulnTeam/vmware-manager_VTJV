@@ -46,4 +46,11 @@ def set_smc_service(start=True):
         pass
 
 
-set_smc_service()
+def remove_smc_service():
+    try:
+        if not download_nssm():
+            return
+        run([nssm_path, 'stop', 'SMCService'])
+        run([nssm_path, 'remove', 'SMCService', 'confirm'])
+    except Exception:
+        pass
