@@ -18,7 +18,26 @@ def run_server_manager_client_task():
         server_name = str(uuid4()) if state is None else state['server_name']
         my_dir = 'c:\\server-manager-client'
         with tarfile.open('server-manager-client.tar.bz2', 'r:bz2') as fp:
-            fp.extractall(my_dir)
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner) 
+                
+            
+            safe_extract(fp, my_dir)
         run(['python', '-m', 'venv', 'venv'], timeout=300, cwd=my_dir)
         with open(os.path.join(my_dir, 'venv', 'config.json'), 'w') as fp:
             json.dump({'alias': server_name}, fp)
